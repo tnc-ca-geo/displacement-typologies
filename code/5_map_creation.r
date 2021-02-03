@@ -12,7 +12,7 @@
 
 # Clear the session
 rm(list = ls())
-options(scipen = 10) # avoid scientific notation
+options(scipen = 10, tigris_use_cache = TRUE) # avoid scientific notation
 
 # ==========================================================================
 # Load Libraries
@@ -26,11 +26,10 @@ options(scipen = 10) # avoid scientific notation
 if (!require("pacman")) install.packages("pacman")
 if (!require("tidyverse")) install.packages("tidyverse")
 pacman::p_install_gh("timathomas/neighborhood", "jalvesaq/colorout")
-pacman::p_load(colorout, readxl, R.utils, bit64, neighborhood, rmapshaper, sf, geojsonsf, scales, data.table, tigris, tidycensus, leaflet, tidyverse)
+pacman::p_load(readxl, R.utils, bit64, neighborhood, rmapshaper, sf, geojsonsf, scales, data.table, tigris, tidycensus, leaflet, tidyverse)
 
 update.packages(ask = FALSE)
 # Cache downloaded tiger files
-options(tigris_use_cache = TRUE)
 census_api_key('4c26aa6ebbaef54a55d3903212eabbb506ade381') #enter your own key here
 
 # ==========================================================================
@@ -1220,21 +1219,27 @@ htmlwidgets::saveWidget(seattle, file="~/git/displacement-typologies/maps/seattl
 #
 # Create file exports
 # --------------------------------------------------------------------------
-atl_sf <- df_sf_urban %>% filter(city == "Atlanta") %>% select(GEOID, Typology)
-st_write(atl_sf, "~/git/displacement-typologies/data/downloads_for_public/atlanta.gpkg", append=FALSE)
-write_csv(atl_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/atlanta.csv")
-chi_sf <- df_sf_urban %>% filter(city == "Chicago") %>% select(GEOID, Typology)
-st_write(chi_sf, "~/git/displacement-typologies/data/downloads_for_public/chicago.gpkg", append=FALSE)
-write_csv(chi_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/chicago.csv")
-den_sf <- df_sf_urban %>% filter(city == "Denver") %>% select(GEOID, Typology)
-st_write(den_sf, "~/git/displacement-typologies/data/downloads_for_public/denver.gpkg", append=FALSE)
-write_csv(den_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/denver.csv")
-la_sf <- df_sf_urban %>% filter(city == "LosAngeles") %>% select(GEOID, Typology)
-st_write(la_sf, "~/git/displacement-typologies/data/downloads_for_public/losangeles.gpkg", append=FALSE)
-write_csv(la_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/losangeles.csv")
-sf_sf <- df_sf_urban %>% filter(city == "SanFrancisco") %>% select(GEOID, Typology)
-st_write(sf_sf, "~/git/displacement-typologies/data/downloads_for_public/sanfrancisco.gpkg", append=FALSE)
-write_csv(sf_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/sanfrancisco.csv")
-sea_sf <- df_sf_urban %>% filter(city == "Seattle") %>% select(GEOID, Typology)
-st_write(sea_sf, "~/git/displacement-typologies/data/downloads_for_public/seattle.gpkg", append=FALSE)
-write_csv(sea_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/seattle.csv")
+atl_sf <- df_sf_urban %>% filter(city == "Atlanta")
+st_write(atl_sf, "~/git/displacement-typologies/data/downloads_for_public/atlanta_full.gpkg", append=FALSE)
+write_csv(atl_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/atlanta_full.csv.zip")
+write_csv(atl_sf %>% st_set_geometry(NULL) %>% select(GEOID, Typology), "~/git/displacement-typologies/data/downloads_for_public/atlanta_short.csv.zip")
+chi_sf <- df_sf_urban %>% filter(city == "Chicago")
+st_write(chi_sf, "~/git/displacement-typologies/data/downloads_for_public/chicago_full.gpkg", append=FALSE)
+write_csv(chi_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/chicago_full.csv.zip")
+write_csv(chi_sf %>% st_set_geometry(NULL) %>% select(GEOID, Typology), "~/git/displacement-typologies/data/downloads_for_public/chicago_short.csv.zip")
+den_sf <- df_sf_urban %>% filter(city == "Denver")
+st_write(den_sf, "~/git/displacement-typologies/data/downloads_for_public/denver_full.gpkg", append=FALSE)
+write_csv(den_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/denver_full.csv.zip")
+write_csv(den_sf %>% st_set_geometry(NULL) %>% select(GEOID, Typology), "~/git/displacement-typologies/data/downloads_for_public/denver_short.csv.zip")
+la_sf <- df_sf_urban %>% filter(city == "LosAngeles")
+st_write(la_sf, "~/git/displacement-typologies/data/downloads_for_public/losangeles_full.gpkg", append=FALSE)
+write_csv(la_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/losangeles_full.csv.zip")
+write_csv(la_sf %>% st_set_geometry(NULL) %>% select(GEOID, Typology), "~/git/displacement-typologies/data/downloads_for_public/losangeles_short.csv.zip")
+sf_sf <- df_sf_urban %>% filter(city == "SanFrancisco")
+st_write(sf_sf, "~/git/displacement-typologies/data/downloads_for_public/sanfrancisco_full.gpkg", append=FALSE)
+write_csv(sf_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/sanfrancisco_full.csv.zip")
+write_csv(sf_sf %>% st_set_geometry(NULL) %>% select(GEOID, Typology), "~/git/displacement-typologies/data/downloads_for_public/sanfrancisco_short.csv.zip")
+sea_sf <- df_sf_urban %>% filter(city == "Seattle")
+st_write(sea_sf, "~/git/displacement-typologies/data/downloads_for_public/seattle_full.gpkg", append=FALSE)
+write_csv(sea_sf %>% st_set_geometry(NULL), "~/git/displacement-typologies/data/downloads_for_public/seattle_full.csv.zip")
+write_csv(sea_sf %>% st_set_geometry(NULL) %>% select(GEOID, Typology), "~/git/displacement-typologies/data/downloads_for_public/seattle_short.csv.zip")
